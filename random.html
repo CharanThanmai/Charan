@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input[type="number"] {
+      width: 50px;
+    }
+
+    .output {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Password Generator</h2>
+        
+        <label for="length">Minimum Length:</label>
+        <input type="number" id="length" value="8" min="1">
+        
+        <label>
+          <input type="checkbox" id="includeNumbers" checked>
+          Include Numbers
+        </label>
+        
+        <label>
+          <input type="checkbox" id="includeSpecial" checked>
+          Include Special Characters
+        </label>
+        
+        <button onclick="generatePassword()">Generate Password</button>
+        
+        <div class="output" id="result"></div>
+      </div>
+    
+      <script>
+        function generatePassword() {
+          const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          const digits = '0123456789';
+          const special = '!@#$%^&*()_+[]{}|;:,.<>?';
+          
+          const length = parseInt(document.getElementById('length').value);
+          const includeNumbers = document.getElementById('includeNumbers').checked;
+          const includeSpecial = document.getElementById('includeSpecial').checked;
+    
+          let characters = letters;
+      if (includeNumbers) characters += digits;
+      if (includeSpecial) characters += special;
+
+      let password = '';
+      let hasNumber = false;
+      let hasSpecial = false;
+      let meetsCriteria = false;
+
+      while (!meetsCriteria || password.length < length) {
+        const newChar = characters.charAt(Math.floor(Math.random() * characters.length));
+        password += newChar;
+
+        if (digits.includes(newChar)) hasNumber = true;
+        if (special.includes(newChar)) hasSpecial = true;
+
+        meetsCriteria = true;
+        if (includeNumbers && !hasNumber) meetsCriteria = false;
+        if (includeSpecial && !hasSpecial) meetsCriteria = false;
+      }
+
+      document.getElementById('result').textContent = 'Generated Password: ' + password;
+    }
+  </script>
+
+</body>
+</html>
